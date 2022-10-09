@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp2/pages/splash/widgets/splash_item.dart';
+import 'package:newsapp2/pages/onboarding/widgets/splash_item.dart';
 
-class SplashProvider extends ChangeNotifier {
+class OnBoardingProvider extends ChangeNotifier {
   PageController? pageController;
   int selectedIndex = 0;
 
@@ -10,24 +10,24 @@ class SplashProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  SplashProvider() {
+  OnBoardingProvider() {
     pageController = PageController(viewportFraction: 1);
   }
 
-  List<SplashItem> splashItems = [
-    const SplashItem(
+  List<OnBoardingItem> splashItems = [
+    const OnBoardingItem(
       imageUrl: 'assets/images/splash_1.jpg',
       title: 'Gündemden Haberdar Ol',
       subTitle:
           'Tabletinden veya telefonunda dilediğin yerde en güncel haberlere ulaşabilirsin.',
     ),
-    const SplashItem(
+    const OnBoardingItem(
       imageUrl: 'assets/images/splash_2.jpg',
       title: 'Beğen veya Paylaş',
       subTitle:
           'Beğendiğin haberleri favori listene ekleyip daha sonra okuyabilir veya dilersen arkadaşlarınla paylaşabilirsin.',
     ),
-    const SplashItem(
+    const OnBoardingItem(
       imageUrl: 'assets/images/splash_3.jpg',
       title: 'Haber Oluştur',
       subTitle:

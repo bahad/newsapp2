@@ -7,15 +7,15 @@ import 'package:newsapp2/pages/favorites/favorites_viewmodel.dart';
 import 'package:newsapp2/pages/home/home_viewmodel.dart';
 import 'package:newsapp2/pages/login/login_viewmodel.dart';
 import 'package:newsapp2/pages/newsdetail/newsdetail_viewmodel.dart';
+import 'package:newsapp2/pages/onboarding/onboarding_view.dart';
+import 'package:newsapp2/pages/onboarding/onboarding_viewmodel.dart';
 import 'package:newsapp2/pages/profile/profile_viewmodel.dart';
 import 'package:newsapp2/pages/signup/signup_viewmodel.dart';
-import 'package:newsapp2/pages/splash/splash_view.dart';
 import 'package:provider/provider.dart';
 import 'core/constants/app_constants.dart';
-import 'core/init/theme/app_theme_light.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'pages/splash/splash_viewmodel.dart';
+import 'core/init/theme/app_theme_light.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,13 +55,12 @@ class MyApp extends StatelessWidget {
                 create: (_) => SignupProvider()),
             ChangeNotifierProvider<FavoritesProvider>(
                 create: (_) => FavoritesProvider()),
-            ChangeNotifierProvider<SplashProvider>(
-                create: (_) => SplashProvider()),
+            ChangeNotifierProvider<OnBoardingProvider>(
+                create: (_) => OnBoardingProvider()),
           ],
           child: MaterialApp(
               title: ApplicationConstants.appName,
               theme: AppThemeLight.instance.theme,
-
               /*  localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
@@ -71,7 +70,7 @@ class MyApp extends StatelessWidget {
                 Locale('en'),
                 Locale('tr'),
               ], */
-              home: const SplashView()),
+              home: const OnBoardingPage()),
         );
       },
     );

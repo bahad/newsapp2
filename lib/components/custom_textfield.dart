@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:newsapp2/core/base/base_state.dart';
 
 class CustomTextField extends StatelessWidget {
   final double? topPadding;
@@ -40,16 +41,21 @@ class CustomTextField extends StatelessWidget {
           autofocus: false,
           validator: validator!,
           inputFormatters: inputFormatters,
-          controller: controller!,
+          controller: controller,
           cursorColor: const Color(0xFFff6b6b),
-          obscureText: obscureText!,
-          keyboardType: keyboardType!,
-          readOnly: readonly!,
+          obscureText: obscureText ?? false,
+          keyboardType: keyboardType ?? TextInputType.text,
+          readOnly: readonly ?? false,
           toolbarOptions: const ToolbarOptions(copy: false, paste: false),
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.only(bottom: 13.0, top: 13.0, left: 16.0),
-            prefixIcon: prefixIcon!,
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: prefixIcon,
+            ),
+            prefixIconConstraints:
+                BoxConstraints.tightFor(height: Utility.dynamicWidthPixel(50)),
             filled: isSearchable! ? true : false,
             fillColor: Colors.grey[200],
             border: isSearchable!
@@ -79,9 +85,10 @@ class CustomTextField extends StatelessWidget {
                     borderSide: const BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.circular(6.0),
                   ),
-            hintText: hintText!,
+            hintText: hintText,
             hintStyle: const TextStyle(color: Colors.black),
-            labelText: labelText!,
+            labelStyle: const TextStyle(color: Colors.black),
+            labelText: labelText,
 
             //floatingLabelBehavior: FloatingLabelBehavior.always,
           ),

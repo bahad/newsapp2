@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:newsapp2/core/init/theme/color_manager.dart';
 import 'package:newsapp2/pages/login/login_viewmodel.dart';
 import 'package:newsapp2/services/auth_services.dart';
 import 'package:provider/provider.dart';
@@ -124,11 +125,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                               animationController
                                 ..duration = const Duration(seconds: 2)
                                 ..forward();
-                              SnackBar snackBar = const SnackBar(
-                                backgroundColor: Colors.green,
-                                content:
-                                    Text('Tebrikler ! Giriş işlemi başarılı.'),
-                              );
+                              SnackBar snackBar = SnackBar(
+                                  backgroundColor:
+                                      ColorManager.instance.success,
+                                  content: CustomText(
+                                    text: 'Tebrikler ! Giriş işlemi başarılı.',
+                                    sizes: Sizes.normal,
+                                    color: ColorManager.instance.successText,
+                                  ));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                               Future.delayed(const Duration(milliseconds: 2100),
@@ -140,12 +144,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                             const NavbarPage()));
                               });
                             } else {
-                              SnackBar snackBar = const SnackBar(
-                                  backgroundColor: Colors.red,
+                              SnackBar snackBar = SnackBar(
+                                  backgroundColor: ColorManager.instance.fail,
                                   content: CustomText(
                                     textAlign: TextAlign.center,
                                     sizes: Sizes.small,
                                     text: "Kullanıcı adı veya şifre hatalı",
+                                    color: ColorManager.instance.failText,
                                   ));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);

@@ -42,7 +42,7 @@ class _NavbarPageState extends State<NavbarPage> {
           ),
         ), */
         bottomNavigationBar: NavigationBar(
-          backgroundColor: Colors.green[90],
+          //backgroundColor: Colors.green[90],
           height: 60,
           selectedIndex: index!,
           animationDuration: const Duration(seconds: 3),

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:newsapp2/core/base/base_state.dart';
 import 'package:newsapp2/core/init/theme/color_manager.dart';
 import 'package:newsapp2/pages/newsdetail/newsdetail_view.dart';
 
@@ -62,7 +63,7 @@ class ListNewsItem extends StatelessWidget {
                         ),
                       ),
                     ),
-              const SizedBox(width: 10),
+              SizedBox(width: Utility.dynamicWidthPixel(10)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,13 +74,13 @@ class ListNewsItem extends StatelessWidget {
                       textAlign: TextAlign.start,
                       text: news.title.toString(),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Utility.dynamicWidthPixel(10)),
                     CustomText(
                       sizes: Sizes.small,
                       fontWeight: FontWeight.normal,
                       text: news.time.toString(),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Utility.dynamicWidthPixel(10)),
                     FittedBox(
                       child: Container(
                         decoration: BoxDecoration(
@@ -88,7 +89,7 @@ class ListNewsItem extends StatelessWidget {
                                 color: ColorManager.instance.iconColor),
                             borderRadius: BorderRadius.circular(3)),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(Utility.dynamicWidthPixel(8)),
                           child: Center(
                             child: CustomText(
                                 sizes: Sizes.small,

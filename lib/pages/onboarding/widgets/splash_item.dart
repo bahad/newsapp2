@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:newsapp2/components/custom_text.dart';
 import 'package:newsapp2/core/base/base_state.dart';
 
-class SplashItem extends StatelessWidget {
+class OnBoardingItem extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String subTitle;
-  const SplashItem(
+  const OnBoardingItem(
       {super.key,
       required this.imageUrl,
       required this.title,

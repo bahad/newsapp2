@@ -20,7 +20,7 @@ class AppThemeLight extends AppTheme {
         // shadowColor: ColorManager.instance.transparent,
         backgroundColor: ColorManager.instance.buttonColor,
         useMaterial3: true,
-        fontFamily: "nunito-regular",
+        fontFamily: "satoshi-regular",
         //  primarySwatch: ColorManager.instance.materialGray,
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:newsapp2/components/custom_dialog.dart';
-import 'package:newsapp2/components/nodata.dart';
+import 'package:newsapp2/components/no_internet.dart';
 
 import 'package:newsapp2/core/base/base_state.dart';
 import 'package:newsapp2/pages/favorites/favorites_viewmodel.dart';
@@ -69,7 +69,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         child: CircularProgressIndicator.adaptive(),
       );
     } else if (vm.favorite == null) {
-      return const Center(child: NoDataPage());
+      return const Center(child: NoInternet());
     } else {
       if (vm.favorite!.isEmpty) {
         return const EmptyPage(
@@ -103,6 +103,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 ),
                                 'Seçilen haberi silmek istediğinize emin misiniz ?',
                                 () {
+                                  Navigator.of(context).pop();
                                   vm.deleteFav(
                                       vm.favorite![index].url!, vm.userID);
                                   vm.getFav();
@@ -110,13 +111,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                   SnackBar snackBar = SnackBar(
                                       backgroundColor:
                                           ColorManager.instance.success,
-                                      content: const CustomText(
+                                      content: CustomText(
                                         sizes: Sizes.normal,
                                         textAlign: TextAlign.center,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                                        color:
+                                            ColorManager.instance.successText,
                                         text:
-                                            'Seçtiğiniz haber listenizden silinmiştir.',
+                                            'Seçtiğiniz haber, listenizden silinmiştir.',
                                       ));
                                   ScaffoldMessenger.of(ctx)
                                       .showSnackBar(snackBar);

@@ -6,28 +6,29 @@ import 'package:newsapp2/components/custom_text.dart';
 import 'package:newsapp2/core/base/base_state.dart';
 import 'package:newsapp2/core/init/theme/color_manager.dart';
 import 'package:newsapp2/pages/navbar/navbar.dart';
-import 'package:newsapp2/pages/splash/splash_viewmodel.dart';
-import 'package:newsapp2/pages/splash/widgets/splash_indicator.dart';
+import 'package:newsapp2/pages/onboarding/onboarding_viewmodel.dart';
+import 'package:newsapp2/pages/onboarding/widgets/splash_indicator.dart';
 import 'package:provider/provider.dart';
 
-class SplashView extends StatefulWidget {
-  const SplashView({super.key});
+class OnBoardingPage extends StatefulWidget {
+  const OnBoardingPage({super.key});
 
   @override
-  State<SplashView> createState() => _SplashViewState();
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   void initState() {
-    SplashProvider vm = Provider.of<SplashProvider>(context, listen: false);
+    OnBoardingProvider vm =
+        Provider.of<OnBoardingProvider>(context, listen: false);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    SplashProvider vm = Provider.of<SplashProvider>(context);
+    OnBoardingProvider vm = Provider.of<OnBoardingProvider>(context);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: Utility.dynamicWidthPixel(100)),

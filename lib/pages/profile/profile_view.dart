@@ -2,16 +2,21 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:newsapp2/components/custom_dialog.dart';
 import 'package:newsapp2/core/base/base_state.dart';
 import 'package:newsapp2/core/init/theme/color_manager.dart';
 import 'package:newsapp2/pages/login/login_view.dart';
-import 'package:newsapp2/pages/navbar/navbar.dart';
 import 'package:newsapp2/pages/profile/profile_viewmodel.dart';
+import 'package:newsapp2/pages/profile/update_profile.dart';
+import 'package:newsapp2/utils/capitalize_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/custom_icon.dart';
 import '../../components/custom_text.dart';
 import '../../core/init/cache/shared_preferences_config.dart';
+import '../navbar/navbar.dart';
+import 'widgets/profile_list_item.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -26,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
     PreferenceUtils.init();
     String userId = PreferenceUtils.getString("userId");
     String username = PreferenceUtils.getString("username");
-    ProfileProvider vm = Provider.of(context, listen: false);
+    ProfileProvider vm = Provider.of<ProfileProvider>(context, listen: false);
 
     /* Future.delayed(const Duration(milliseconds: 100), () {
       vm.getUserData(userId);
@@ -42,70 +47,84 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     ProfileProvider vm = Provider.of<ProfileProvider>(context);
-
     return Scaffold(
-        bottomSheet: vm.userModel == null || vm.userModel.user == null
-            ? const SizedBox()
-            : _buildBottomSheet(context),
-        body: _buildContent(size, vm));
+      body: _buildContent(size, vm),
+    );
   }
 
   _buildContent(size, ProfileProvider vm) {
     if (vm.isLoading) {
       return const Center(child: CircularProgressIndicator.adaptive());
-    } else if (vm.userModel == null || vm.userModel.user == null) {
+    } else if (vm.userModel == null || vm.userModel?.user == null) {
       return const Center(child: LoginPage());
     } else {
       List<IconData> icons = const [
-        CupertinoIcons.person,
         CupertinoIcons.mail,
         CupertinoIcons.phone,
       ];
-      List<String> labels = [
-        vm.userModel.user.fullname.toString(),
-        vm.userModel.user.email.toString(),
-        vm.userModel.user.phone.toString()
+      List<TextEditingController> txtController = [
+        vm.emailController,
+        vm.phoneController,
       ];
+      List<String> hints = [
+        vm.userModel?.user?.email ?? "Email giriniz.",
+        vm.phoneController.text =
+            vm.userModel?.user?.phone ?? "Telefon numarası giriniz",
+      ];
+      vm.emailController.text = vm.userModel?.user?.email ?? "";
+      vm.phoneController.text = vm.userModel?.user?.phone ?? "";
+
       return SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(Utility.dynamicWidthPixel(8)),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      vm.userModel.user!.fullname != null
-                          ? CircleAvatar(
-                              child: CustomText(
+                  PhysicalModel(
+                    elevation: 18,
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    child: Container(
+                      padding: EdgeInsets.all(Utility.dynamicWidthPixel(6)),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 2.5,
+                            color: ColorManager.instance.buttonColor,
+                          )),
+                      child: CircleAvatar(
+                        radius: Utility.dynamicWidthPixel(55),
+                        backgroundImage: const NetworkImage(
+                            'https://i.pinimg.com/564x/e2/1f/6c/e21f6cc78f5db19ed54595482e582b3f.jpg'),
+                        /* child: CustomText(
                                   text: vm.userModel.user!.fullname
                                       .substring(0, 1)
-                                      .toUpperCase()),
-                            )
-                          : const SizedBox(),
-                      SizedBox(width: size.width * 0.042),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            sizes: Sizes.big,
-                            fontWeight: FontWeight.bold,
-                            text: vm.userModel.user?.username.toString(),
-                          ),
-                          CustomText(
-                            sizes: Sizes.big,
-                            text: vm.userModel.user?.email.toString(),
-                          ),
-                        ],
-                      )
-                    ],
+                                      .toUpperCase()), */
+                      ),
+                    ),
                   ),
+                  SizedBox(height: Utility.dynamicWidthPixel(16)),
+                  vm.userModel?.user?.fullname != null
+                      ? CustomText(
+                          sizes: Sizes.big,
+                          text:
+                              vm.userModel?.user?.fullname?.capitalize() ?? "",
+                        )
+                      : const SizedBox(),
+                  SizedBox(height: Utility.dynamicWidthPixel(3)),
+                  vm.userModel?.user?.username != null
+                      ? CustomText(
+                          sizes: Sizes.normal,
+                          text:
+                              vm.userModel?.user?.username?.capitalize() ?? "",
+                        )
+                      : const SizedBox(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      vm.userModel.user?.isBanned!
+                      vm.userModel!.user!.isBanned!
                           ? Row(
                               children: [
                                 Tooltip(
@@ -127,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             )
                           : const SizedBox(),
-                      !vm.userModel.user?.isApproved!
+                      !vm.userModel!.user!.isApproved!
                           ? Row(
                               children: [
                                 SizedBox(width: size.width * 0.026),
@@ -155,9 +174,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Image.asset('assets/icons/twitter.png', height: 36),
-                      Image.asset('assets/icons/instagram.png', height: 36),
-                      Image.asset('assets/icons/facebook.png', height: 36)
+                      SvgPicture.asset(
+                        'assets/icons/twitter.svg',
+                        height: Utility.dynamicWidthPixel(41),
+                      ),
+                      SvgPicture.asset(
+                        'assets/icons/instagram.svg',
+                        height: Utility.dynamicWidthPixel(41),
+                      ),
+                      SvgPicture.asset(
+                        'assets/icons/facebook.svg',
+                        height: Utility.dynamicWidthPixel(41),
+                      )
                     ],
                   ),
                   SizedBox(height: size.height * 0.029),
@@ -168,7 +196,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6)),
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding:
+                              EdgeInsets.all(Utility.dynamicWidthPixel(16)),
                           child: Center(
                             child: Column(
                               children: [
@@ -176,11 +205,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                   sizes: Sizes.normal,
                                   text: 'Takipçiler',
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: Utility.dynamicWidthPixel(10)),
                                 CustomText(
                                     sizes: Sizes.normal,
                                     fontWeight: FontWeight.bold,
-                                    text: vm.userModel.user?.followers!.length
+                                    text: vm.userModel?.user?.followers?.length
                                         .toString()),
                               ],
                             ),
@@ -193,7 +222,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           // color: Colors.grey[200],
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding:
+                              EdgeInsets.all(Utility.dynamicWidthPixel(16)),
                           child: Center(
                             child: Column(
                               children: [
@@ -201,13 +231,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   sizes: Sizes.normal,
                                   text: 'Yorumlar',
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: Utility.dynamicWidthPixel(10)),
                                 CustomText(
-                                  sizes: Sizes.normal,
-                                  fontWeight: FontWeight.bold,
-                                  text: vm.commentModel?.comments?.length
-                                      .toString(),
-                                )
+                                    sizes: Sizes.normal,
+                                    fontWeight: FontWeight.bold,
+                                    text: vm.commentModel?.comments != null
+                                        ? vm.commentModel?.comments?.length
+                                            .toString()
+                                        : "")
                               ],
                             ),
                           ),
@@ -215,34 +246,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(0),
-                          shrinkWrap: true,
-                          itemCount: icons.length,
-                          itemBuilder: ((context, index) {
-                            return Padding(
-                                padding: const EdgeInsets.all(0),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintStyle:
-                                        const TextStyle(color: Colors.black),
-                                    hintText: labels[index],
-                                    prefixIcon: CustomIcon(
-                                      color: ColorManager
-                                          .instance.secondaryIconColor,
-                                      icon: icons[index],
-                                    ),
-                                    suffixIcon: CustomIcon(
-                                      color:
-                                          ColorManager.instance.disabledColor,
-                                      icon: CupertinoIcons.pencil,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                ));
-                          }))),
+                  SizedBox(height: Utility.dynamicWidthPixel(24)),
+                  _buildSettings(context, vm),
                   SizedBox(height: Utility.dynamicWidthPixel(40))
                 ],
               ),
@@ -253,29 +258,69 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  _buildBottomSheet(context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(50),
-      child: SizedBox(
-        width: double.infinity,
-        child: TextButton.icon(
-          style: const ButtonStyle(),
-          icon: const CustomIcon(
-            icon: Icons.logout,
-          ),
-          label: const CustomText(
-            color: Colors.grey,
-            sizes: Sizes.normal,
-            text: 'Çıkış Yap',
-          ),
-          onPressed: () {
-            PreferenceUtils.setString("userId", "");
-            PreferenceUtils.setString("username", "");
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginView()));
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const NavbarPage()));
+  _buildSettings(context, ProfileProvider vm) {
+    List<ProfileListItem> optionsList = [
+      ProfileListItem(
+        image: 'assets/icons/edit_profile.svg',
+        title: 'Profil Bilgilerini Güncelle',
+        onTap: () {
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => UpdateProfile(
+                        email: vm.userModel?.user?.email,
+                        fullName: vm.userModel?.user?.fullname,
+                        phone: vm.userModel?.user?.phone ?? "",
+                        instagram: vm.userModel?.user?.media?.instagram ?? "",
+                        twitter: vm.userModel?.user?.media?.twitter ?? "",
+                        facebook: vm.userModel?.user?.media?.facebook ?? "",
+                      )));
+        },
+        // subtitle: 'Profiline ait bilgilerini değiştirebilirsin.',
+      ),
+      const ProfileListItem(
+        image: 'assets/icons/theme1.svg',
+        title: 'Tema Değiştir',
+        //   subtitle: 'Tema Değiştir',
+        /* trailing: Switch.adaptive(
+          value: themeProvider.themeMode,
+          onChanged: (val) {
+            themeProvider.toggleTheme(val);
           },
-        ),
+        ), */
+      ),
+      ProfileListItem(
+        image: 'assets/icons/logout.svg',
+        title: 'Çıkış Yap',
+        onTap: () {
+          CustomDialog().showDialog(
+            SvgPicture.asset('assets/icons/info.svg'),
+            'Çıkış Yapmak İstediğinize Emin misiniz ?',
+            () {
+              PreferenceUtils.setString("userId", "");
+              PreferenceUtils.setString("username", "");
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginView()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NavbarPage(),
+                  ));
+            },
+            context,
+          );
+        },
+      ),
+    ];
+    return SizedBox(
+      child: ListView.separated(
+        clipBehavior: Clip.antiAlias,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) => optionsList[index],
+        separatorBuilder: ((context, index) => Divider(
+              height: Utility.dynamicWidthPixel(16),
+            )),
+        itemCount: optionsList.length,
       ),
     );
   }

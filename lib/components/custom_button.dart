@@ -7,8 +7,15 @@ class CustomButton extends StatelessWidget {
   final String? label;
   final VoidCallback? onPressed;
   final double? topPadding;
-
-  const CustomButton({Key? key, this.label, this.onPressed, this.topPadding})
+  final Color? buttonColor;
+  final Color? textColor;
+  const CustomButton(
+      {Key? key,
+      this.label,
+      this.onPressed,
+      this.topPadding,
+      this.buttonColor,
+      this.textColor})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -22,13 +29,13 @@ class CustomButton extends StatelessWidget {
         ),
         child: ElevatedButton(
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(ColorManager.instance.buttonColor),
+              backgroundColor: MaterialStateProperty.all(
+                  buttonColor ?? ColorManager.instance.buttonColor),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6)))),
           onPressed: onPressed,
           child: CustomText(
-            color: ColorManager.instance.white,
+            color: textColor ?? ColorManager.instance.white,
             sizes: Sizes.normal,
             text: label!,
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:newsapp2/components/custom_text.dart';
 import 'package:newsapp2/core/base/base_state.dart';
 import 'package:newsapp2/core/init/theme/color_manager.dart';
@@ -14,8 +13,7 @@ class CustomDialog {
     return showCupertinoDialog(
         context: context,
         barrierDismissible: true,
-        builder: ((context1) => Material(
-                child: CupertinoAlertDialog(
+        builder: ((context1) => CupertinoAlertDialog(
               title: title,
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,13 +36,12 @@ class CustomDialog {
                     textAlign: TextAlign.center,
                   ),
                   onPressed: () {
-                    Navigator.of(context1).pop();
+                    //   Navigator.of(context1).pop();
                   },
                 ),
                 CupertinoDialogAction(
                     onPressed: () {
                       onConfirm!();
-                      Navigator.of(context1).pop();
                     },
                     child: const CustomText(
                       sizes: Sizes.normal,
@@ -52,6 +49,6 @@ class CustomDialog {
                       textAlign: TextAlign.center,
                     )),
               ],
-            ))));
+            )));
   }
 }

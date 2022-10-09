@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp2/components/emtpy_page.dart';
-import 'package:newsapp2/components/nodata.dart';
+import 'package:newsapp2/components/no_internet.dart';
 import 'package:newsapp2/core/base/base_state.dart';
 import 'package:newsapp2/core/init/theme/color_manager.dart';
 import 'package:newsapp2/pages/comment/comment_viewmodel.dart';
@@ -30,7 +30,6 @@ class _CommentPageState extends State<CommentPage> {
     CommentProvider vm = Provider.of<CommentProvider>(context, listen: false);
     vm.getCommentByNews(widget.newsUrl!);
     vm.getUserInfo();
-    // vm.getUserInfo();
     super.initState();
   }
 
@@ -59,7 +58,7 @@ class _CommentPageState extends State<CommentPage> {
     if (vm.isLaoding) {
       return const Center(child: CircularProgressIndicator.adaptive());
     } else if (vm.commentByNews == null) {
-      return const NoDataPage();
+      return const NoInternet();
     } else if (vm.commentByNews!.isEmpty) {
       return const EmptyPage(
         text:

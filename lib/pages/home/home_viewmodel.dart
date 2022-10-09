@@ -121,4 +121,11 @@ class HomeProvider extends ChangeNotifier {
     isSearching = true;
     notifyListeners();
   }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:newsapp2/core/init/theme/color_manager.dart';
 import 'package:newsapp2/services/auth_services.dart';
 import 'package:newsapp2/utils/phone_formatter.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_text.dart';
 import '../../components/custom_textfield.dart';
+import '../../core/base/base_state.dart';
 import '../../core/init/cache/shared_preferences_config.dart';
 import '../navbar/navbar.dart';
 import 'signup_viewmodel.dart';
@@ -79,7 +81,10 @@ class _SignupPageState extends State<SignupPage> {
                         labelText: 'Kullanıcı Adı',
                         keyboardType: TextInputType.text,
                         obscureText: false,
-                        prefixIcon: const Icon(Icons.person),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          size: Utility.dynamicWidthPixel(25),
+                        ),
                         readonly: false,
                         isSearchable: false,
                         validator: (String? value) {
@@ -96,7 +101,10 @@ class _SignupPageState extends State<SignupPage> {
                         labelText: 'Email',
                         keyboardType: TextInputType.emailAddress,
                         obscureText: false,
-                        prefixIcon: const Icon(CupertinoIcons.mail),
+                        prefixIcon: Icon(
+                          CupertinoIcons.mail,
+                          size: Utility.dynamicWidthPixel(25),
+                        ),
                         readonly: false,
                         isSearchable: false,
                         validator: (String? value) {
@@ -113,7 +121,10 @@ class _SignupPageState extends State<SignupPage> {
                         labelText: 'İsim, Soyisim',
                         keyboardType: TextInputType.text,
                         obscureText: false,
-                        prefixIcon: const Icon(CupertinoIcons.person),
+                        prefixIcon: Icon(
+                          CupertinoIcons.person,
+                          size: Utility.dynamicWidthPixel(25),
+                        ),
                         readonly: false,
                         isSearchable: false,
                         validator: (String? value) {
@@ -134,7 +145,10 @@ class _SignupPageState extends State<SignupPage> {
                           LengthLimitingTextInputFormatter(17),
                         ],
                         obscureText: false,
-                        prefixIcon: const Icon(CupertinoIcons.phone),
+                        prefixIcon: Icon(
+                          CupertinoIcons.phone,
+                          size: Utility.dynamicWidthPixel(25),
+                        ),
                         readonly: false,
                         isSearchable: false,
                         validator: (String? value) {
@@ -151,7 +165,10 @@ class _SignupPageState extends State<SignupPage> {
                         labelText: '****',
                         keyboardType: TextInputType.text,
                         obscureText: true,
-                        prefixIcon: const Icon(Icons.lock),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          size: Utility.dynamicWidthPixel(25),
+                        ),
                         readonly: false,
                         isSearchable: false,
                         validator: (String? value) {
@@ -177,18 +194,18 @@ class _SignupPageState extends State<SignupPage> {
                                     vm.lat!,
                                     vm.long!)
                                 .then((value) {
-                              if (kDebugMode) {
-                                print("SIGN UP VALUE: $value");
-                              }
                               if (value != null) {
                                 if (kDebugMode) {
                                   print("SIGN UP MESSAGE: ${value.message}");
                                 }
                                 if (value.message.contains('user created')) {
-                                  const snackBar = SnackBar(
-                                      backgroundColor: Colors.green,
+                                  SnackBar snackBar = SnackBar(
+                                      backgroundColor:
+                                          ColorManager.instance.success,
                                       content: CustomText(
                                         sizes: Sizes.small,
+                                        color:
+                                            ColorManager.instance.successText,
                                         text: 'Tebrikler! Kaydınız başarılı.',
                                       ));
                                   PreferenceUtils.setString("username",
@@ -207,20 +224,23 @@ class _SignupPageState extends State<SignupPage> {
                                   });
                                 } else {
                                   SnackBar snackBar = SnackBar(
-                                      backgroundColor: Colors.red,
+                                      backgroundColor:
+                                          ColorManager.instance.fail,
                                       content: CustomText(
                                         textAlign: TextAlign.center,
                                         sizes: Sizes.small,
+                                        color: ColorManager.instance.failText,
                                         text: value.message ?? "Hatalı İşlem.",
                                       ));
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);
                                 }
                               } else {
-                                const snackBar = SnackBar(
-                                    backgroundColor: Colors.red,
+                                SnackBar snackBar = SnackBar(
+                                    backgroundColor: ColorManager.instance.fail,
                                     content: CustomText(
                                       sizes: Sizes.small,
+                                      color: ColorManager.instance.failText,
                                       text: 'Başarısız Kayıt',
                                     ));
                                 ScaffoldMessenger.of(context)

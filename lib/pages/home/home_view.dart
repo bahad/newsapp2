@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:newsapp2/components/nodata.dart';
+import 'package:newsapp2/components/no_internet.dart';
 import 'package:newsapp2/core/base/base_state.dart';
 import 'package:newsapp2/core/init/theme/color_manager.dart';
 import 'package:newsapp2/pages/home/home_viewmodel.dart';
@@ -145,10 +145,9 @@ class HomePage extends StatelessWidget {
       return const Center(
         child: CircularProgressIndicator.adaptive(),
       );
-    } else if (vm.sonDakikaArr == null) {
-      return const Center(
-        child: NoDataPage(),
-      );
+    }
+    if (vm.sonDakikaArr == null) {
+      return const NoInternet();
     }
     return SizedBox(
       child: ListView.builder(
@@ -172,7 +171,7 @@ class HomePage extends StatelessWidget {
       );
     } else if (vm.gundemArr == null) {
       return const Center(
-        child: NoDataPage(),
+        child: NoInternet(),
       );
     }
     return SizedBox(
@@ -203,7 +202,7 @@ class HomePage extends StatelessWidget {
       );
     } else if (vm.ekonomiArr == null) {
       return const Center(
-        child: NoDataPage(),
+        child: NoInternet(),
       );
     }
     return SizedBox(
@@ -234,7 +233,7 @@ class HomePage extends StatelessWidget {
       );
     } else if (vm.dunyaArr == null) {
       return const Center(
-        child: NoDataPage(),
+        child: NoInternet(),
       );
     }
     return SizedBox(
