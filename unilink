@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.bahadir.newsapp2",
+            "sha256_cert_fingerprints": [
+                "E5:4C:16:AF:73:E3:D6:6E:9D:83:55:6D:A1:49:DB:9E:A8:8F:A2:4A:BA:93:C5:F7:0C:60:E8:28:BB:6C:46:27"
+            ]
+        }
+    }
+]
